@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Business Card</title>
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:Inter,Arial,Helvetica,sans-serif;
+  background:linear-gradient(135deg,#f5f8fb,#e8eef5);
+  color:#083b63;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:22px;
+}
+
+.card{
+  width:100%;
+  max-width:430px;
+  text-align:center;
+  padding:32px 24px;
+  border-radius:30px;
+  background:#fff;
+  border:1px solid rgba(8,59,99,.12);
+  box-shadow:0 24px 70px rgba(0,34,68,.16);
+}
+
+.logo{
+  width:100%;
+  max-width:300px;
+  height:auto;
+  margin:0 auto 28px;
+  display:block;
+}
+
+h1{
+  margin:0;
+  font-size:30px;
+  font-weight:750;
+  letter-spacing:-.6px;
+  color:#003f6b;
+}
+
+.position{
+  margin-top:16px;
+  font-size:16px;
+  font-weight:600;
+  color:#003f6b;
+}
+
+.department{
+  margin-top:6px;
+  font-size:14px;
+  color:rgba(0,63,107,.62);
+}
+
+.company{
+  margin-top:8px;
+  font-size:15px;
+  color:rgba(0,63,107,.72);
+}
+
+.buttons{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  margin-top:26px;
+}
+
+.button{
+  display:block;
+  width:100%;
+  padding:15px 18px;
+  border-radius:15px;
+  text-decoration:none;
+  background:#004b7f;
+  color:#fff;
+  font-size:15px;
+  font-weight:700;
+  border:none;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+
+.secondary{
+  background:#eef4f8;
+  color:#004b7f;
+  border:1px solid rgba(0,75,127,.12);
+}
+
+.contact-line{
+  margin-top:22px;
+  font-size:13px;
+  color:rgba(0,63,107,.58);
+  line-height:1.7;
+  word-break:break-word;
+}
+
+.footer{
+  margin-top:24px;
+  font-size:12px;
+  line-height:1.5;
+  color:rgba(0,63,107,.42);
+}
+
+.error{
+  color:#b00020;
+  font-weight:700;
+}
+</style>
+</head>
+
+<body>
+<main class="card">
+  <img class="logo" src="bpg-official-logo.png" alt="Baiyun Power Group Logo">
+
+  <h1 id="name">Loading...</h1>
+  <div class="position" id="position"></div>
+  <div class="department" id="department"></div>
+  <div class="company" id="company"></div>
+
+  <div class="buttons">
+    <a class="button" id="saveContact" href="#">Save Contact</a>
+    <a class="button secondary" id="whatsapp" href="#" target="_blank" rel="noopener">WhatsApp</a>
+    <a class="button secondary" id="email" href="#">Email</a>
+    <a class="button secondary" id="website" href="#" target="_blank" rel="noopener">Company Website</a>
+  </div>
+
+  <div class="contact-line" id="contactLine"></div>
+
+  <div class="footer">
+    Baiyun Power Group Co., Ltd.<br>
+    Guangzhou, China
+  </div>
+</main>
+
+<script>
+function getIdFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("id") || "hardy-chen";
+}
+
+function cleanPhoneForWhatsApp(phone) {
+  return phone.replace("+", "").replaceAll(" ", "").replaceAll("-", "");
+}
+
+function createVCard(person) {
+  const lines = [
+    "BEGIN:VCARD",
+    "VERSION:3.0",
+    "FN:" + person.name,
+    "ORG:" + person.company,
+    "TITLE:" + person.position,
+    "TEL;TYPE=CELL,VOICE:" + person.phone,
+    "EMAIL;TYPE=INTERNET,WORK:" + person.email,
+    "URL:" + person.website,
+    "NOTE:WeChat: " + (person.wechat || ""),
+    "END:VCARD"
+  ];
+
+  return lines.join("\\r\\n");
+}
+
+function downloadVCard(person) {
+  const vcard = createVCard(person);
+  const blob = new Blob([vcard], { type: "text/vcard;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = person.name.replaceAll(" ", "-") + ".vcf";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
+  URL.revokeObjectURL(url);
+}
+
+async function loadCard() {
+  const id = getIdFromUrl();
+
+  try {
+    const response = await fetch("data.json");
+    const data = await response.json();
+    const person = data[id];
+
+    if (!person) {
+      document.getElementById("name").innerHTML = '<span class="error">Contact not found</span>';
+      return;
+    }
+
+    document.title = person.name + " | Digital Business Card";
+
+    document.getElementById("name").textContent = person.name;
+    document.getElementById("position").textContent = person.position || "";
+    document.getElementById("department").textContent = person.department || "";
+    document.getElementById("company").textContent = person.company || "Baiyun Power Group";
+
+    document.getElementById("contactLine").innerHTML =
+      (person.phone || "") + "<br>" + (person.email || "");
+
+    document.getElementById("saveContact").onclick = function(e) {
+      e.preventDefault();
+      downloadVCard(person);
+    };
+
+    document.getElementById("whatsapp").href =
+      "https://wa.me/" + cleanPhoneForWhatsApp(person.whatsapp || person.phone);
+
+    document.getElementById("email").href =
+      "mailto:" + person.email;
+
+    document.getElementById("website").href =
+      person.website;
+
+    if (!person.email) {
+      document.getElementById("email").style.display = "none";
+    }
+
+  } catch (error) {
+    document.getElementById("name").innerHTML = '<span class="error">Failed to load card</span>';
+  }
+}
+
+loadCard();
+</script>
+</body>
+</html>
