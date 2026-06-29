@@ -148,6 +148,7 @@ function getIdFromUrl() {
 
 function cleanPhoneForWhatsApp(phone) {
   if (!phone) return "";
+
   return phone
     .replace("+", "")
     .replaceAll(" ", "")
@@ -181,6 +182,7 @@ function downloadVCard(person) {
   const a = document.createElement("a");
   a.href = url;
   a.download = (person.name || "contact").replaceAll(" ", "-") + ".vcf";
+
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -192,7 +194,7 @@ async function loadCard() {
   const id = getIdFromUrl();
 
   try {
-    const response = await fetch("./data.json?v=" + Date.now());
+    const response = await fetch("https://hardy-master.github.io/card-system/data.json?v=" + Date.now());
 
     if (!response.ok) {
       throw new Error("Cannot load data.json");
