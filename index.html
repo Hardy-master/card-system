@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Digital Business Card</title>
+
 <style>
 *{box-sizing:border-box}
 
@@ -146,19 +147,25 @@ function getIdFromUrl() {
 }
 
 function cleanPhoneForWhatsApp(phone) {
-  return phone.replace("+", "").replaceAll(" ", "").replaceAll("-", "");
+  if (!phone) return "";
+  return phone
+    .replace("+", "")
+    .replaceAll(" ", "")
+    .replaceAll("-", "")
+    .replaceAll("(", "")
+    .replaceAll(")", "");
 }
 
 function createVCard(person) {
   const lines = [
     "BEGIN:VCARD",
     "VERSION:3.0",
-    "FN:" + person.name,
-    "ORG:" + person.company,
-    "TITLE:" + person.position,
-    "TEL;TYPE=CELL,VOICE:" + person.phone,
-    "EMAIL;TYPE=INTERNET,WORK:" + person.email,
-    "URL:" + person.website,
+    "FN:" + (person.name || ""),
+    "ORG:" + (person.company || "Baiyun Power Group"),
+    "TITLE:" + (person.position || ""),
+    "TEL;TYPE=CELL,VOICE:" + (person.phone || ""),
+    "EMAIL;TYPE=INTERNET,WORK:" + (person.email || ""),
+    "URL:" + (person.website || "https://www.baiyunpower.com"),
     "NOTE:WeChat: " + (person.wechat || ""),
     "END:VCARD"
   ];
@@ -173,7 +180,7 @@ function downloadVCard(person) {
 
   const a = document.createElement("a");
   a.href = url;
-  a.download = person.name.replaceAll(" ", "-") + ".vcf";
+  a.download = (person.name || "contact").replaceAll(" ", "-") + ".vcf";
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -185,45 +192,68 @@ async function loadCard() {
   const id = getIdFromUrl();
 
   try {
-    const response = await fetch("data.json");
+    const response = await fetch("./data.json?v=" + Date.now());
+
+    if (!response.ok) {
+      throw new Error("Cannot load data.json");
+    }
+
     const data = await response.json();
     const person = data[id];
 
     if (!person) {
       document.getElementById("name").innerHTML = '<span class="error">Contact not found</span>';
+      document.getElementById("position").textContent = "Please check the card ID.";
       return;
     }
 
     document.title = person.name + " | Digital Business Card";
 
-    document.getElementById("name").textContent = person.name;
+    document.getElementById("name").textContent = person.name || "";
     document.getElementById("position").textContent = person.position || "";
     document.getElementById("department").textContent = person.department || "";
     document.getElementById("company").textContent = person.company || "Baiyun Power Group";
 
-    document.getElementById("contactLine").innerHTML =
-      (person.phone || "") + "<br>" + (person.email || "");
+    const contactParts = [];
+
+    if (person.phone) {
+      contactParts.push(person.phone);
+    }
+
+    if (person.email) {
+      contactParts.push(person.email);
+    }
+
+    document.getElementById("contactLine").innerHTML = contactParts.join("<br>");
 
     document.getElementById("saveContact").onclick = function(e) {
       e.preventDefault();
       downloadVCard(person);
     };
 
-    document.getElementById("whatsapp").href =
-      "https://wa.me/" + cleanPhoneForWhatsApp(person.whatsapp || person.phone);
+    if (person.whatsapp || person.phone) {
+      document.getElementById("whatsapp").href =
+        "https://wa.me/" + cleanPhoneForWhatsApp(person.whatsapp || person.phone);
+    } else {
+      document.getElementById("whatsapp").style.display = "none";
+    }
 
-    document.getElementById("email").href =
-      "mailto:" + person.email;
-
-    document.getElementById("website").href =
-      person.website;
-
-    if (!person.email) {
+    if (person.email) {
+      document.getElementById("email").href = "mailto:" + person.email;
+    } else {
       document.getElementById("email").style.display = "none";
+    }
+
+    if (person.website) {
+      document.getElementById("website").href = person.website;
+    } else {
+      document.getElementById("website").style.display = "none";
     }
 
   } catch (error) {
     document.getElementById("name").innerHTML = '<span class="error">Failed to load card</span>';
+    document.getElementById("position").textContent = "Please check data.json or refresh the page.";
+    console.error(error);
   }
 }
 
