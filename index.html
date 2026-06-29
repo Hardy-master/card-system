@@ -6,112 +6,114 @@
 <title>Digital Business Card</title>
 
 <style>
-*{box-sizing:border-box}
-
-body{
-  margin:0;
-  min-height:100vh;
-  font-family:Inter,Arial,Helvetica,sans-serif;
-  background:linear-gradient(135deg,#f5f8fb,#e8eef5);
-  color:#083b63;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:22px;
+* {
+  box-sizing: border-box;
 }
 
-.card{
-  width:100%;
-  max-width:430px;
-  text-align:center;
-  padding:32px 24px;
-  border-radius:30px;
-  background:#fff;
-  border:1px solid rgba(8,59,99,.12);
-  box-shadow:0 24px 70px rgba(0,34,68,.16);
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Inter, Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg, #f5f8fb, #e8eef5);
+  color: #083b63;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 22px;
 }
 
-.logo{
-  width:100%;
-  max-width:300px;
-  height:auto;
-  margin:0 auto 28px;
-  display:block;
+.card {
+  width: 100%;
+  max-width: 430px;
+  text-align: center;
+  padding: 32px 24px;
+  border-radius: 30px;
+  background: #ffffff;
+  border: 1px solid rgba(8, 59, 99, 0.12);
+  box-shadow: 0 24px 70px rgba(0, 34, 68, 0.16);
 }
 
-h1{
-  margin:0;
-  font-size:30px;
-  font-weight:750;
-  letter-spacing:-.6px;
-  color:#003f6b;
+.logo {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  margin: 0 auto 28px;
+  display: block;
 }
 
-.position{
-  margin-top:16px;
-  font-size:16px;
-  font-weight:600;
-  color:#003f6b;
+h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 750;
+  letter-spacing: -0.6px;
+  color: #003f6b;
 }
 
-.department{
-  margin-top:6px;
-  font-size:14px;
-  color:rgba(0,63,107,.62);
+.position {
+  margin-top: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #003f6b;
 }
 
-.company{
-  margin-top:8px;
-  font-size:15px;
-  color:rgba(0,63,107,.72);
+.department {
+  margin-top: 6px;
+  font-size: 14px;
+  color: rgba(0, 63, 107, 0.62);
 }
 
-.buttons{
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-  margin-top:26px;
+.company {
+  margin-top: 8px;
+  font-size: 15px;
+  color: rgba(0, 63, 107, 0.72);
 }
 
-.button{
-  display:block;
-  width:100%;
-  padding:15px 18px;
-  border-radius:15px;
-  text-decoration:none;
-  background:#004b7f;
-  color:#fff;
-  font-size:15px;
-  font-weight:700;
-  border:none;
-  cursor:pointer;
-  -webkit-tap-highlight-color:transparent;
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 26px;
 }
 
-.secondary{
-  background:#eef4f8;
-  color:#004b7f;
-  border:1px solid rgba(0,75,127,.12);
+.button {
+  display: block;
+  width: 100%;
+  padding: 15px 18px;
+  border-radius: 15px;
+  text-decoration: none;
+  background: #004b7f;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.contact-line{
-  margin-top:22px;
-  font-size:13px;
-  color:rgba(0,63,107,.58);
-  line-height:1.7;
-  word-break:break-word;
+.secondary {
+  background: #eef4f8;
+  color: #004b7f;
+  border: 1px solid rgba(0, 75, 127, 0.12);
 }
 
-.footer{
-  margin-top:24px;
-  font-size:12px;
-  line-height:1.5;
-  color:rgba(0,63,107,.42);
+.contact-line {
+  margin-top: 22px;
+  font-size: 13px;
+  color: rgba(0, 63, 107, 0.58);
+  line-height: 1.7;
+  word-break: break-word;
 }
 
-.error{
-  color:#b00020;
-  font-weight:700;
+.footer {
+  margin-top: 24px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgba(0, 63, 107, 0.42);
+}
+
+.error {
+  color: #b00020;
+  font-weight: 700;
 }
 </style>
 </head>
@@ -141,6 +143,56 @@ h1{
 </main>
 
 <script>
+const cards = {
+  "hardy-chen": {
+    name: "Hardy Chen",
+    position: "International Presales Engineer",
+    department: "International Marketing Center",
+    phone: "+8618123550218",
+    whatsapp: "8618123550218",
+    email: "Hardychan0901@outlook.com",
+    wechat: "Hardy_Channn0901",
+    website: "https://www.baiyunpower.com",
+    company: "Baiyun Power Group"
+  },
+
+  "aimee-yan": {
+    name: "Aimee Yan",
+    position: "Marketing Manager",
+    department: "International Marketing Center",
+    phone: "+8618802002525",
+    whatsapp: "8618802002525",
+    email: "yanht@bpgroup.com.cn",
+    wechat: "Aimee_5678_",
+    website: "https://www.baiyunpower.com",
+    company: "Baiyun Power Group"
+  },
+
+  "xindy": {
+    name: "xindy",
+    position: "worker",
+    department: "International Marketing Center",
+    phone: "+8613711099141",
+    whatsapp: "8613711099141",
+    email: "",
+    wechat: "",
+    website: "https://www.baiyunpower.com",
+    company: "Baiyun Power Group"
+  },
+
+  "zhou-yaowu": {
+    name: "Zhou Yaowu",
+    position: "Technical Expert",
+    department: "International Marketing Center",
+    phone: "+61412337480",
+    whatsapp: "61412337480",
+    email: "240710652@qq.com",
+    wechat: "123456789",
+    website: "https://www.baiyunpower.com",
+    company: "Baiyun Power Group"
+  }
+};
+
 function getIdFromUrl() {
   const params = new URLSearchParams(window.location.search);
   return params.get("id") || "hardy-chen";
@@ -150,7 +202,7 @@ function cleanPhoneForWhatsApp(phone) {
   if (!phone) return "";
 
   return phone
-    .replace("+", "")
+    .replaceAll("+", "")
     .replaceAll(" ", "")
     .replaceAll("-", "")
     .replaceAll("(", "")
@@ -171,7 +223,7 @@ function createVCard(person) {
     "END:VCARD"
   ];
 
-  return lines.join("\\r\\n");
+  return lines.join("\r\n");
 }
 
 function downloadVCard(person) {
@@ -190,72 +242,58 @@ function downloadVCard(person) {
   URL.revokeObjectURL(url);
 }
 
-async function loadCard() {
+function loadCard() {
   const id = getIdFromUrl();
+  const person = cards[id];
 
-  try {
-    const response = await fetch("https://hardy-master.github.io/card-system/data.json?v=" + Date.now());
+  if (!person) {
+    document.getElementById("name").innerHTML = '<span class="error">Contact not found</span>';
+    document.getElementById("position").textContent = "Please check the card ID.";
+    document.getElementById("department").textContent = "Current ID: " + id;
+    return;
+  }
 
-    if (!response.ok) {
-      throw new Error("Cannot load data.json");
-    }
+  document.title = person.name + " | Digital Business Card";
 
-    const data = await response.json();
-    const person = data[id];
+  document.getElementById("name").textContent = person.name || "";
+  document.getElementById("position").textContent = person.position || "";
+  document.getElementById("department").textContent = person.department || "";
+  document.getElementById("company").textContent = person.company || "Baiyun Power Group";
 
-    if (!person) {
-      document.getElementById("name").innerHTML = '<span class="error">Contact not found</span>';
-      document.getElementById("position").textContent = "Please check the card ID.";
-      return;
-    }
+  const contactParts = [];
 
-    document.title = person.name + " | Digital Business Card";
+  if (person.phone) {
+    contactParts.push(person.phone);
+  }
 
-    document.getElementById("name").textContent = person.name || "";
-    document.getElementById("position").textContent = person.position || "";
-    document.getElementById("department").textContent = person.department || "";
-    document.getElementById("company").textContent = person.company || "Baiyun Power Group";
+  if (person.email) {
+    contactParts.push(person.email);
+  }
 
-    const contactParts = [];
+  document.getElementById("contactLine").innerHTML = contactParts.join("<br>");
 
-    if (person.phone) {
-      contactParts.push(person.phone);
-    }
+  document.getElementById("saveContact").onclick = function(e) {
+    e.preventDefault();
+    downloadVCard(person);
+  };
 
-    if (person.email) {
-      contactParts.push(person.email);
-    }
+  if (person.whatsapp || person.phone) {
+    document.getElementById("whatsapp").href =
+      "https://wa.me/" + cleanPhoneForWhatsApp(person.whatsapp || person.phone);
+  } else {
+    document.getElementById("whatsapp").style.display = "none";
+  }
 
-    document.getElementById("contactLine").innerHTML = contactParts.join("<br>");
+  if (person.email) {
+    document.getElementById("email").href = "mailto:" + person.email;
+  } else {
+    document.getElementById("email").style.display = "none";
+  }
 
-    document.getElementById("saveContact").onclick = function(e) {
-      e.preventDefault();
-      downloadVCard(person);
-    };
-
-    if (person.whatsapp || person.phone) {
-      document.getElementById("whatsapp").href =
-        "https://wa.me/" + cleanPhoneForWhatsApp(person.whatsapp || person.phone);
-    } else {
-      document.getElementById("whatsapp").style.display = "none";
-    }
-
-    if (person.email) {
-      document.getElementById("email").href = "mailto:" + person.email;
-    } else {
-      document.getElementById("email").style.display = "none";
-    }
-
-    if (person.website) {
-      document.getElementById("website").href = person.website;
-    } else {
-      document.getElementById("website").style.display = "none";
-    }
-
-  } catch (error) {
-    document.getElementById("name").innerHTML = '<span class="error">Failed to load card</span>';
-    document.getElementById("position").textContent = "Please check data.json or refresh the page.";
-    console.error(error);
+  if (person.website) {
+    document.getElementById("website").href = person.website;
+  } else {
+    document.getElementById("website").style.display = "none";
   }
 }
 
