@@ -1,0 +1,46 @@
+{
+  "hardy-chen": {
+    "name": "Hardy Chen",
+    "position": "International Presales Engineer",
+    "department": "International Marketing Center",
+    "phone": "+8618123550218",
+    "whatsapp": "8618123550218",
+    "email": "Hardychan0901@outlook.com",
+    "wechat": "Hardy_Channn0901",
+    "website": "https://www.baiyunpower.com",
+    "company": "Baiyun Power Group"
+  },
+  "aimee-yan": {
+    "name": "Aimee Yan",
+    "position": "Marketing Manager",
+    "department": "International Marketing Center",
+    "phone": "+8618802002525",
+    "whatsapp": "8618802002525",
+    "email": "yanht@bpgroup.com.cn",
+    "wechat": "Aimee_5678_",
+    "website": "https://www.baiyunpower.com",
+    "company": "Baiyun Power Group"
+  },
+  "xindy": {
+    "name": "xindy",
+    "position": "worker",
+    "department": "International Marketing Center",
+    "phone": "+8613711099141",
+    "whatsapp": "8613711099141",
+    "email": "",
+    "wechat": "",
+    "website": "https://www.baiyunpower.com",
+    "company": "Baiyun Power Group"
+  },
+  "zhou-yaowu": {
+    "name": "Zhou Yaowu",
+    "position": "Technical Expert",
+    "department": "International Marketing Center",
+    "phone": "+61412337480",
+    "whatsapp": "61412337480",
+    "email": "240710652@qq.com",
+    "wechat": "123456789",
+    "website": "https://www.baiyunpower.com",
+    "company": "Baiyun Power Group"
+  }
+}

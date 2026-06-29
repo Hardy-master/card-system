@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BPG Card Admin</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Inter,Arial,Helvetica,sans-serif;background:#f3f7fb;color:#073b63;padding:28px}.wrap{max-width:760px;margin:0 auto;background:#fff;border-radius:24px;padding:28px;box-shadow:0 20px 60px rgba(0,34,68,.12)}h1{margin:0 0 8px;font-size:28px;color:#003f6b}p{margin:0 0 24px;color:rgba(0,63,107,.65);line-height:1.6}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.field{display:flex;flex-direction:column;gap:7px}.full{grid-column:1/-1}label{font-size:13px;font-weight:700;color:#003f6b}input{width:100%;padding:13px 14px;border:1px solid rgba(0,63,107,.18);border-radius:12px;font-size:15px;outline:none}input:focus{border-color:#004b7f}button{margin-top:22px;width:100%;padding:15px 18px;border:0;border-radius:14px;background:#004b7f;color:#fff;font-weight:800;font-size:15px;cursor:pointer}.result{margin-top:22px;padding:16px;border-radius:14px;background:#eef4f8;color:#003f6b;line-height:1.7;word-break:break-word;display:none}.error{background:#fff0f0;color:#a00018}.small{margin-top:16px;font-size:12px;color:rgba(0,63,107,.55)}@media(max-width:650px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>BPG Digital Card Admin</h1>
+<p>Fill in the contact information and click Save. The system will update <strong>data.json</strong> in GitHub automatically.</p>
+<div class="grid">
+<div class="field"><label>Admin Password</label><input id="password" type="password" placeholder="Enter admin password"></div>
+<div class="field"><label>Card ID</label><input id="id" placeholder="e.g. zhou-yaowu"></div>
+<div class="field"><label>Name</label><input id="name" placeholder="e.g. Zhou Yaowu"></div>
+<div class="field"><label>Position</label><input id="position" placeholder="e.g. Technical Expert"></div>
+<div class="field"><label>Department</label><input id="department" value="International Marketing Center"></div>
+<div class="field"><label>Phone</label><input id="phone" placeholder="e.g. +61412337480"></div>
+<div class="field"><label>WhatsApp</label><input id="whatsapp" placeholder="e.g. 61412337480"></div>
+<div class="field"><label>Email</label><input id="email" placeholder="e.g. name@example.com"></div>
+<div class="field"><label>WeChat</label><input id="wechat" placeholder="Optional"></div>
+<div class="field"><label>Website</label><input id="website" value="https://www.baiyunpower.com"></div>
+<div class="field full"><label>Company</label><input id="company" value="Baiyun Power Group"></div>
+</div>
+<button id="saveBtn">Save / Update Card</button>
+<div id="result" class="result"></div>
+<div class="small">Important: replace WORKER_URL in admin.html with your Cloudflare Worker URL.</div>
+</div>
+<script>
+const WORKER_URL = "PASTE_YOUR_CLOUDFLARE_WORKER_URL_HERE";
+const SITE_BASE_URL = "https://hardy-master.github.io/card-system/";
+function slugify(text){return text.toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");}
+function cleanWhatsApp(phone){return (phone||"").replaceAll("+","").replaceAll(" ","").replaceAll("-","").replaceAll("(","").replaceAll(")","");}
+document.getElementById("name").addEventListener("input",function(){const idInput=document.getElementById("id");if(!idInput.value.trim()){idInput.value=slugify(this.value);}});
+document.getElementById("phone").addEventListener("input",function(){const whatsappInput=document.getElementById("whatsapp");if(!whatsappInput.value.trim()){whatsappInput.value=cleanWhatsApp(this.value);}});
+function showResult(message,isError){const box=document.getElementById("result");box.style.display="block";box.className=isError?"result error":"result";box.innerHTML=message;}
+document.getElementById("saveBtn").addEventListener("click",async function(){
+const id=slugify(document.getElementById("id").value);const password=document.getElementById("password").value;
+if(!WORKER_URL||WORKER_URL.includes("PASTE_YOUR")){showResult("Please set WORKER_URL in admin.html first.",true);return;}
+if(!id){showResult("Card ID is required.",true);return;}
+const person={name:document.getElementById("name").value.trim(),position:document.getElementById("position").value.trim(),department:document.getElementById("department").value.trim(),phone:document.getElementById("phone").value.trim(),whatsapp:cleanWhatsApp(document.getElementById("whatsapp").value.trim()),email:document.getElementById("email").value.trim(),wechat:document.getElementById("wechat").value.trim(),website:document.getElementById("website").value.trim()||"https://www.baiyunpower.com",company:document.getElementById("company").value.trim()||"Baiyun Power Group"};
+if(!person.name){showResult("Name is required.",true);return;}
+this.disabled=true;this.textContent="Saving...";
+try{const response=await fetch(WORKER_URL,{method:"POST",headers:{"Content-Type":"application/json","X-Admin-Password":password},body:JSON.stringify({id,person})});const result=await response.json();if(!response.ok||!result.ok){throw new Error(result.error||"Save failed");}const cardUrl=SITE_BASE_URL+"?id="+encodeURIComponent(id);showResult("<strong>Saved successfully.</strong><br>Card URL:<br><a href='"+cardUrl+"' target='_blank'>"+cardUrl+"</a><br><br>GitHub commit: "+(result.commit||"done"),false);}catch(error){showResult("Error: "+error.message,true);}
+this.disabled=false;this.textContent="Save / Update Card";
+});
+</script>
+</body>
+</html>
